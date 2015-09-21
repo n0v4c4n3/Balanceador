@@ -37,16 +37,16 @@ namespace BalanceadorMatriz
 			}
 			balancearRec(cantidades);
 		}		
-		public void balancearRec(decimal[] cantidades){
-			decimal mayorCredito = minimo(cantidades); 
+		public void balancearRec(decimal[] cantidades){	
 			decimal mayorDebito = maximo(cantidades);
-			if (cantidades[mayorCredito] == 0 && cantidades[mayorDebito] == 0){
+			decimal mayorCredito = minimo(cantidades); 
+			if (cantidades[mayorDebito] == 0 && cantidades[mayorCredito] == 0){
 				return;
 			}
 			//Lo mismo que en el BalanceadorLista
 			decimal cantidad = Math.min(cantidades[mayorDebito], -cantidades[mayorCredito]); 
-			cantidades[mayorCredito] += cantidad;
 			cantidades[mayorDebito] -= cantidad;
+			cantidades[mayorCredito] += cantidad;
 			balancearRec(cantidades);
 		}		
 	}

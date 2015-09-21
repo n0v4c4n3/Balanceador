@@ -47,8 +47,8 @@ namespace BalanceadorLista
 				while(deudor.debe > 0){
 				  Persona acreedor = acreedores.peek(); 
 				  decimal cantidad = Math.min(deudor.debe, -acreedor.debe); 
-				  acreedor.debe += cantidad;
 				  deudor.debe -= cantidad;
+				  acreedor.debe += cantidad;
 			    if(acreedor.debe == 0){ //Si justo da 0 el acreedor fue pagado, ya no me interesa (se podría agregar un offset tipo +-0.50)
 			      acreedores.pop() //Elimina del stack
 			    }

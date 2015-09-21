@@ -31,22 +31,22 @@ namespace BalanceadorMatriz
 			for (int p=0; p<N; p++){
 				for (int i=0; i<N; i++){
 					//Simplificar las deudas recíprocas
-					//Lo que "i" le debe a "p" menos lo que "p" acreditó a "i"
-					cantidades[p] += (matriz[i][p] - matriz[p][i]);
+					//Lo que "p" acreditó a "i" menos lo que "i" le debe a "p"
+					cantidades[p] += (matriz[p][i] - matriz[i][p]);
 				}
 			}
 			balancearRec(cantidades);
 		}		
 		public void balancearRec(decimal[] cantidades){
-			decimal mayorCredito = maximo(cantidades); 
-			decimal mayorDebito = minimo(cantidades);
+			decimal mayorCredito = minimo(cantidades); 
+			decimal mayorDebito = maximo(cantidades);
 			if (cantidades[mayorCredito] == 0 && cantidades[mayorDebito] == 0){
 				return;
 			}
 			//Lo mismo que en el BalanceadorLista
-			decimal cantidad = Math.min(cantidades[mayorCredito], -cantidades[mayorDebito]); 
-			cantidades[mayorCredito] -= cantidad;
-			cantidades[mayorDebito] += cantidad;
+			decimal cantidad = Math.min(cantidades[mayorDebito], -cantidades[mayorCredito]); 
+			cantidades[mayorCredito] += cantidad;
+			cantidades[mayorDebito] -= cantidad;
 			balancearRec(cantidades);
 		}		
 	}

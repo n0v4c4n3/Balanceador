@@ -13,8 +13,7 @@ namespace BalanceadorLista
 		private decimal cantidad { get; set; }
 	}
 	public class Utilidades{
-		//Dadas las personas y deudas que se necesitan balancear  a
-		//Sabiendo que las personas no tenian deudas previas a estas
+		//Dadas las personas y deudas que se necesitan balancear
 		private void balancear(List<Persona> personas, List<Deuda> deudas){
 			//lista (ordenada) de deudores y un stack (LIFO) de acreedores
 			private List<Persona> deudores = new List<Persona>(); 
@@ -41,12 +40,12 @@ namespace BalanceadorLista
 			foreach(Persona deudor in deudores){
 				//Hasta que el deudor deba 0
 				while(deudor.debe > 0){
-				  Persona acreedor = acreedores.peek; 
+				  Persona acreedor = acreedores.peek(); 
 				  decimal cantidad = Math.min(deudor.debe, -acreedor.debe); 
 				  acreedor.debe += cantidad;
 				  deudor.debe -= cantidad;
 			    if(acreedor.debe == 0){ //Si justo da 0 el acreedor fue pagado, ya no me interesa (se podría agregar un offset tipo +-0.50)
-			      acreedores.pop //Elimina del stack
+			      acreedores.pop() //Elimina del stack
 			    }
 			    Console.WriteLine(deudor.nombre + " debe a " + acreedor.nombre + " $ " + cantidad); //Para ver como se va calculando
 			  }

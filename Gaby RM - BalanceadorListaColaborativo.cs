@@ -9,17 +9,17 @@ namespace BalanceadorLista
 		private List<DeudaPrevia> deudasPrevias { get; set; }
 		//Método para verificar si la persona "deudor" tiene deuda con un acreedor dado
 		public bool tieneDeudaCon(Persona acreedor, decimal cantidad){
-			foreach(DeudaPrevia dP in this.deudasprevias){
-				if(dP.a.equals(acreedor) && dp.cantidad > 0 && dP.cantidad > cantidad){
+			foreach(DeudaPrevia dP in acreedor.deudasprevias){
+				if(dP.a.equals(this) && dp.cantidad > 0 && dP.cantidad > cantidad){
 					return true; //Existe deuda previa con el acreedor
 				}
 			}
 			return false; //No existe
 		}
-		//Método para verificar si la persona "deudor" tiene deuda con un acreedor dado
+		//Método para verificar si algún acreedor tiene deuda con ésta persona
 		public void saldarDeudaCon(Persona acreedor, decimal cantidad){
-			foreach(DeudaPrevia dP in this.deudasprevias){
-				if(dP.a.equals(acreedor) && dP.cantidad > 0 && dP.cantidad > cantidad){
+			foreach(DeudaPrevia dP in acreedor.deudasprevias){
+				if(dP.a.equals(this) && dP.cantidad > 0 && dP.cantidad > cantidad){
 					dP.cantidad -= cantidad;
 				}
 			}

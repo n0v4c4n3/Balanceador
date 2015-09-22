@@ -48,6 +48,7 @@ namespace BalanceadorLista
 			      acreedores.pop() //Elimina del stack
 			    }
 			    Console.WriteLine(deudor.nombre + " debe a " + acreedor.nombre + " $ " + cantidad); //Para ver como se va calculando
+			    //TBD guardar cada transacción a las personas
 			  }
 			}
 		}

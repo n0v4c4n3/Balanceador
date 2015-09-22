@@ -1,4 +1,4 @@
-//Gaby RM - BalanceadorLista (13/09/2015)
+//Gaby RM - BalanceadorListaColaborativo (20/09/2015)
 using System;
 using System.Collections;
 namespace BalanceadorLista
@@ -6,16 +6,33 @@ namespace BalanceadorLista
 	public class Persona{
 		private string Nombre { get; set; }
 		private decimal debe { get; set; }
-		private List<Cuenta> cuentas { get; set; }
+		private List<DeudaPrevia> deudasPrevias { get; set; }
+		//Método para verificar si la persona "deudor" tiene deuda con un acreedor dado
+		public bool tieneDeudaCon(Persona acreedor, decimal cantidad){
+			foreach(DeudaPrevia dP in this.deudasprevias){
+				if(dP.a.equals(acreedor) && dp.cantidad > 0 && dP.cantidad > cantidad){
+					return true; //Existe deuda previa con el acreedor
+				}
+			}
+			return false; //No existe
+		}
+		//Método para verificar si la persona "deudor" tiene deuda con un acreedor dado
+		public void saldarDeudaCon(Persona acreedor, decimal cantidad){
+			foreach(DeudaPrevia dP in this.deudasprevias){
+				if(dP.a.equals(acreedor) && dP.cantidad > 0 && dP.cantidad > cantidad){
+					dP.cantidad -= cantidad;
+				}
+			}
+		}		
 	}
 	public class Deuda{
 		private Persona deudor { get; set; }
 		private Persona acreedor { get; set; }
 		private decimal cantidad { get; set; }
 	}
-	public class Cuenta{
-		private debe { get; set; }
-		private List<Persona> grupo { get; set; }
+	public class DeudaPrevia{
+		private Persona a { get; set; }
+		private decimal cantidad { get; set; }
 	}
 	public class Utilidades{
 		//Dadas las personas y deudas que se necesitan balancear
@@ -27,6 +44,12 @@ namespace BalanceadorLista
 			foreach(Deuda deuda in deudas){
 				deuda.acreedor.debe -= deuda.cantidad;
 				deuda.deudor.debe += deuda.cantidad;
+				if(deuda.deudor.tieneDeudaCon(deuda.acreedor, cantidad)){  	
+				  deuda.deudor.saldarDeudaCon(deuda.acreedor, deuda.cantidad);
+				  //Lo opuesto a lo anterior, por ahora... TBD pensar si funca o no
+					deuda.acreedor.debe += deuda.cantidad; 
+					deuda.deudor.debe -= deuda.cantidad; 
+				}		
 			}
 			//Si la persona termina con "debe" > 0 es deudor, < 0 es acreedor y 0 se ignora
 			foreach(Persona persona in personas){
@@ -47,21 +70,17 @@ namespace BalanceadorLista
 				while(deudor.debe > 0){
 				  Persona acreedor = acreedores.peek(); 
 				  decimal cantidad = Math.min(deudor.debe, -acreedor.debe); 
-				  deudor.debe -= cantidad;
+ 				  deudor.debe -= cantidad;
 				  acreedor.debe += cantidad;
-			    if(acreedor.debe == 0){ //Si justo da 0 el acreedor fue pagado, ya no me interesa (se podría agregar un offset tipo +-0.50)
+			    if(acreedor.debe == 0){ //Si justo da 0 el acreedor fue pagado
 			      acreedores.pop() //Elimina del stack
 			    }
-			    Console.WriteLine(deudor.nombre + " debe a " + acreedor.nombre + " $ " + cantidad); //Para ver como se va calculando
+			    //Agrego las "movimientos" que actuarán como deudas previas
+				  DeudaPrevia deudaPrevia = new DeudaPrevia();
+				  deudaPrevia.a = acreedor;
+				  deudor.deudasPrevias.add(deuda);	
+			    Console.WriteLine(deudor.nombre + " tiene una deuda con " + acreedor.nombre + " $ " + cantidad); //Para ver como se va calculando
 			  }
-			}
-			foreach(Persona persona in personas){
-				if(persona.debe != 0){
-					Cuenta cuenta = new Cuenta();
-					cuenta.debe = persona.debe;
-					cuenta.grupo.Add(personas);
-					persona.cuentas.Add(cuenta)
-				}
 			}
 		}
 	}
